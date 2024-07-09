@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense, useState, useEffect } from "react";
 const Layout = lazy(() => import("./components/Layout"));
 const Home = lazy(() => import("./pages/Home"));
@@ -8,47 +8,25 @@ import { CountryData } from "./lib/countryData";
 import axios from "axios";
 
 function App() {
-  const [eachCountry, setEachCountry] = useState<CountryData>({
-    name: {
-      common: "",
-      official: "",
-      nativeName: {
-        fra: {
-          official: "",
-          common: "",
-        },
-      },
-    },
-    tld: [],
-    currencies: {
-      XPF: {
-        name: "",
-        symbol: "",
-      },
-    },
-    capital: [],
-    region: "",
-    subregion: "",
-    languages: {
-      fra: "",
-    },
-    borders: [],
-    population: 0,
-    flags: {
-      png: "",
-      svg: "",
-    },
-  });
-  const { countryName } = useParams();
+  const [countries, setCountries] = useState<CountryData[]>([]);
+
   useEffect(() => {
-    const fetchCountry = async () => {
-      const response = await axios.get<CountryData>(
-        `https://restcountries.com/v3.1/name/${countryName}`
-      );
-      setEachCountry(response.data);
-    };
-    fetchCountry();
-  }, [eachCountry, countryName]);
+    async function getCountries() {
+      const countryURL = "https://restcountries.com/v3.1/all";
+      try {
+        const response = await axios.get(countryURL);
+        const data = response.data;
+        console.log(data);
+
+        setCountries(data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getCountries();
+    console.log("running");
+  }, []);
+
   return (
     <>
       <Suspense
@@ -59,10 +37,10 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home country={countries} />} />
               <Route
-                path="/:countryName"
-                element={<CountryDetails country={eachCountry} />}
+                path="/country/:countryName"
+                element={<CountryDetails country={countries} />}
               />
             </Route>
           </Routes>

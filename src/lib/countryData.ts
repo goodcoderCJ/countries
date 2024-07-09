@@ -160,6 +160,7 @@ export interface CountryData {
   flags?: {
     png?: string;
     svg?: string;
+    alt?: string;
   };
   coatOfArms?: object;
   startOfWeek?: string;

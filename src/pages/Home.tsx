@@ -1,7 +1,5 @@
 import { Card } from "../components/ui/card";
-import axios from "axios";
 
-import { useState, useEffect } from "react";
 import { CountryData } from "../lib/countryData";
 import { FaSearch } from "react-icons/fa";
 import {
@@ -14,67 +12,63 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+type Country = {
+  country: CountryData[];
+};
 
-const Home = () => {
-  const [countries, setCountries] = useState<CountryData[]>([]);
-  // const [message, setMessage] = useState<string>("");
+const Home = ({ country }: Country) => {
+  const [searchWord, setSearchWord] = useState("");
+  const handleSearchWord = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setSearchWord(e.target.value);
+    console.log(searchWord);
+  };
 
-  useEffect(() => {
-    async function getCountries() {
-      const countryURL = "https://restcountries.com/v3.1/all";
-      try {
-        const response = await axios.get(countryURL);
-        const data = response.data;
-        console.log(data);
-
-        setCountries(data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getCountries();
-    console.log("running");
-  }, []);
+  const [optionSelect, setOptionSelect] = useState("");
+  const handleOptionChange = (val: string) => {
+    setOptionSelect(val);
+    console.log(val);
+  };
   return (
     <>
       <section className="search-filter mt-[2em] mb-[4em]">
-        <form action="">
-          <div className="flex flex-col md:flex-row justify-between">
-            <div className="search-input-container bg-[#293947] flex items-center gap-4 px-[0.5em] py-[0.7em] rounded-[5px] w-[40%]">
-              <FaSearch className="text-[#ebebeb] text-[0.9rem] ml-[1em]" />
-              <input
-                type="text"
-                name="search"
-                id="search"
-                className="bg-inherit w-full text-[#ebebeb] border-0 outline-none"
-                placeholder="Search for a country..."
-              />
-            </div>
-
-            <Select>
-              <SelectTrigger className="w-[180px] bg-[#293947] text-[#ebebeb] border-0 outline-none">
-                <SelectValue placeholder="Filter by Region" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup className="bg-[#293947] text-[#ebebeb] border-0 outline-none">
-                  <SelectLabel>Countries</SelectLabel>
-                  <SelectItem value="Africa">Africa</SelectItem>
-                  <SelectItem value="America">America</SelectItem>
-                  <SelectItem value="Asia">Asia</SelectItem>
-                  <SelectItem value="Europe">Europe</SelectItem>
-                  <SelectItem value="Oceania">Oceania</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+        <div className="flex flex-col gap-5 md:gap-0 md:flex-row justify-between">
+          <div className="search-input-container bg-[#293947] flex items-center gap-4 px-[0.5em] py-[0.7em] rounded-[5px] w-[100] md:w-[40%]">
+            <FaSearch className="text-[#ebebeb] text-[0.9rem] ml-[1em]" />
+            <input
+              type="search"
+              name="searchText"
+              id="searchText"
+              value={searchWord}
+              onChange={handleSearchWord}
+              className="bg-inherit w-full text-[#ebebeb] border-0 outline-[0]"
+              placeholder="Search for a country..."
+            />
           </div>
-        </form>
+
+          <Select value={optionSelect} onValueChange={handleOptionChange}>
+            <SelectTrigger className="w-[180px] bg-[#293947] text-[#ebebeb] border-0 outline-[0] ring-offset-0">
+              <SelectValue placeholder="Filter by Region" />
+            </SelectTrigger>
+            <SelectContent className="border-0 outline-none ring-offset-0">
+              <SelectGroup className="bg-[#293947] text-[#ebebeb] border-0 outline-[0]">
+                <SelectLabel>Countries</SelectLabel>
+                <SelectItem value="Africa">Africa</SelectItem>
+                <SelectItem value="America">America</SelectItem>
+                <SelectItem value="Asia">Asia</SelectItem>
+                <SelectItem value="Europe">Europe</SelectItem>
+                <SelectItem value="Oceania">Oceania</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </section>
       <section className="countries grid grid-col-1 md:grid-cols-4 gap-12">
-        {countries.map((data) => {
+        {country.map((data, index) => {
           return (
-            <Link to={`/${data.name.common}`} key={data.idd?.root}>
-              <Card
-                className="text-white col-span-1 flex flex-col bg-[#293947] border-0">
+            <Link to={`/country/${data.name.common}`} key={index}>
+              <Card className="text-white col-span-1 flex flex-col bg-[#293947] border-0">
                 <img
                   src={data.flags?.png}
                   alt="countries flag imag"
