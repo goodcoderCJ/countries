@@ -13,3 +13,6 @@ to test my knowledge, and it turned challenging and interesting at the same time
 - Learnt how to use union types
 - Learnt how to use type interfaces
 - Learnt how to use type assertion
+
+### Live Preview
+[vercel] ("https://getcountriesinfo.vercel.app/")
