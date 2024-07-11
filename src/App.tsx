@@ -16,7 +16,6 @@ function App() {
       try {
         const response = await axios.get(countryURL);
         const data = response.data;
-        console.log(data);
 
         setCountries(data);
       } catch (err) {
@@ -31,7 +30,9 @@ function App() {
     <>
       <Suspense
         fallback={
-          <div className="text-white font-medium text-xl">Loading...</div>
+          <div className="text-white dark:text-[#111111] font-medium text-xl flex justify-center items-center">
+            <div>Loading...</div>
+          </div>
         }
       >
         <BrowserRouter>

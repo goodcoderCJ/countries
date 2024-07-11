@@ -12,5 +12,8 @@ body {
   background-color: #202c37 !important;
   font-family: Nunito Sans;
 }
+.details-link:nth-last-child() {
+  margin-right: 0 !important;
+}
 
 /* https://restcountries.com/v3.1/region/ */

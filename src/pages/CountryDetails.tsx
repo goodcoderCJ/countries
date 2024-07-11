@@ -16,66 +16,118 @@ const CountryDetails = ({ country }: Country) => {
     event.preventDefault();
     navigate(-1);
   };
-  const eachCountry = country.filter(
-    (item) => item.name.common === countryName
-  );
+  const eachCountry = country.filter((item) => item.cca3 === countryName);
+
   return (
-    <div className="flex flex-col gap-12">
+    <div className="">
       <Button
-        className="flex items-center  bg-[#293947] border-0 w-[10%] gap-2 mt-[2em] shadow-md"
+        className="shadow-md text-[#111111] dark:text-[white] w-[50%] sm:w-[30%] md:w-[25%] dark:bg-[#293947] bg-[white] flex gap-3"
         onClick={handleBackNavigate}
       >
-        <FaBackward />
+        <FaBackward className="text-[1.1rem]  sm:text-[1.1rem] md:text-base" />
         <span>Back</span>
       </Button>
       {eachCountry.map((item, index) => {
         return (
           <div
-            className="country-info flex justify-between items-center mt-[2em]"
+            className="country-info mt-[2em] flex flex-col md:flex-row md:justify-between  md:gap-24"
             key={index}
           >
             <img
               src={item.flags?.png}
               alt="country's flag"
-              className="h-34 w-[30%]"
+              className="h-25 md:h-34 w-[100%] sm:w-[100%] md:w-[45%]"
             />
-            <div className="details flex flex-col gap-3 text-[white]">
+            <div className="details-container  text-[#111111] dark:text-[white] mt-8 md:mt-0 flex flex-col gap-10 text-sm w-[100%] sm:w-[100%] md:w-[55%]">
               <h2 className="text-xl">{item.name.common}</h2>
-              <div className="second-container flex justify-between gap-16 text-sm ">
+              <div className="second-container flex flex-col gap-10">
                 <div className="left-content">
-                  <p>Native Name: {item.name.nativeName?.fra?.common}</p>
-                  <p>Population: {item.population}</p>
-                  <p>Region: {item.region}</p>
-                  <p>Sub Region: {item.subregion}</p>
-                  <span className="flex gap-1">
+                  <p>
+                    Native Name:{" "}
+                    <span className="text-[black] dark:text-[#cccccc]">
+                      {item.name.nativeName?.fra?.common}
+                    </span>
+                  </p>
+
+                  <p>
+                    Population:{" "}
+                    <span className="text-[black] dark:text-[#cccccc]">
+                      {item.population}
+                    </span>
+                  </p>
+
+                  <p>
+                    Region:{" "}
+                    <span className="text-[black] dark:text-[#cccccc]">
+                      {" "}
+                      {item.region}{" "}
+                    </span>
+                  </p>
+
+                  <p>
+                    Sub Region:{" "}
+                    <span className="text-[black] dark:text-[#cccccc]">
+                      {" "}
+                      {item.subregion}
+                    </span>
+                  </p>
+
+                  <span className="flex gap-2">
                     Capital:
                     {item.capital?.map((item, index) => {
-                      return <p key={index}>{item}</p>;
+                      return (
+                        <p
+                          key={index}
+                          className="text-[black] dark:text-[#cccccc]"
+                        >
+                          {item}
+                        </p>
+                      );
                     })}
                   </span>
                 </div>
                 <div className="right-content">
-                  <span className="flex gap-1">
+                  <span className="flex gap-2">
                     Top Level Domain:{" "}
                     {item.tld?.map((item, index) => {
-                      return <p key={index}>{item.split("").slice(1)}</p>;
+                      return (
+                        <p
+                          key={index}
+                          className="text-[black] dark:text-[#cccccc]"
+                        >
+                          {item.split("").slice(1)}
+                        </p>
+                      );
                     })}
                   </span>
-                  <p>Currencies: {item.currencies?.XPF?.name}</p>
-                  <p>Languages: {item.languages?.fra}</p>
+
+                  <p>
+                    Currencies:
+                    <span className="text-[black] dark:text-[#cccccc]">
+                      {" "}
+                      {item.currencies?.XPF?.name}
+                    </span>
+                  </p>
+                  <p>
+                    Languages:{" "}
+                    <span className="text-[black] dark:text-[#cccccc]">
+                      {" "}
+                      {item.languages?.fra}
+                    </span>
+                  </p>
                 </div>
               </div>
-              <div className="btn-content text-sm flex justify-between items-center">
+              <div className="btn-content text-sm ">
                 <p>Border countries:</p>
-                <div className="flex gap-2 items-center">
+                <div className="">
                   {item.borders?.map((info, index) => {
                     return (
                       <Link
-                        to={`/country/${item.name.common}`}
+                        to={`/country/${info} `}
                         key={index}
-                        className="rounded-[5px] bg-[#293947] text-sm p-[0.5em]"
+                        className="details-link rounded-[5px] bg-[white] dark:bg-[#293947] text-sm p-2 mr-4 text-[black] dark:text-[#cccccc]"
                       >
-                        {info}
+                        <Button className="">{info}</Button>
                       </Link>
                     );
                   })}{" "}
