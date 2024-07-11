@@ -2,15 +2,6 @@ import { CountryData } from "../lib/countryData";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Card } from "../components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
 
 import Countries from "./Countries";
 import { useState } from "react";
@@ -22,12 +13,14 @@ const Home = ({ country }: Country) => {
   const [searchWord, setSearchWord] = useState("");
   const handleSearchWord = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
+
     setSearchWord(e.target.value);
   };
 
   const [optionSelect, setOptionSelect] = useState("");
-  const handleOptionChange = (val: string) => {
-    setOptionSelect(val);
+  const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setOptionSelect(e.target.value);
+    console.log(e.target.value);
   };
 
   const searchedCountry = country.filter((item) => {
@@ -42,7 +35,7 @@ const Home = ({ country }: Country) => {
 
   return (
     <>
-      <section className="search-filter mt-[2em] mb-[4em]">
+      <section className="search-filter mt-[2em] mb-[4em] z-[9999999999999]">
         <div className="flex flex-col gap-5 md:gap-0 md:flex-row justify-between">
           <div className="search-input-container bg-[white] dark:bg-[#293947] flex items-center gap-4 px-[0.5em] py-[0.7em] rounded-[5px] w-[100] md:w-[40%]">
             <FaSearch className="text-[#111111] dark:text-[white] text-[0.9rem] ml-[1em]" />
@@ -57,22 +50,18 @@ const Home = ({ country }: Country) => {
             />
           </div>
 
-          <Select value={optionSelect} onValueChange={handleOptionChange}>
-            <SelectTrigger className="w-[180px] bg-[#fffcfc] dark:bg-[#334555] text-[#111111] dark:text-[white] border-0 outline-[0] ring-offset-0">
-              <SelectValue placeholder="Filter by Region" />
-            </SelectTrigger>
-            <SelectContent className="border-0 outline-none bg-[#ffffff] ">
-              <SelectGroup className="bg-[#fffcfc] dark:bg-[#334555] text-[#111111] dark:text-[white] border-0 outline-[0]">
-                <SelectLabel>Continent</SelectLabel>
-                <SelectItem value="None">None</SelectItem>
-                <SelectItem value="Africa">Africa</SelectItem>
-                <SelectItem value="Americas">America</SelectItem>
-                <SelectItem value="Asia">Asia</SelectItem>
-                <SelectItem value="Europe">Europe</SelectItem>
-                <SelectItem value="Oceania">Oceania</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <select
+            value={optionSelect}
+            onChange={handleOptionChange}
+            className="w-[180px] bg-[#fffcfc] dark:bg-[#334555] text-[#111111] dark:text-[white] border-0 outline-[0] ring-offset-0 z-[9999999999] md:p-2 p-3 rounded-[3px]"
+          >
+            <option value="None">Select Region</option>
+            <option value="Africa">Africa</option>
+            <option value="Americas">America</option>
+            <option value="Asia">Asia</option>
+            <option value="Europe">Europe</option>
+            <option value="Oceania">Oceania</option>
+          </select>
         </div>
       </section>
       <section className="countries grid grid-col-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 md:gap-12">
