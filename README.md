@@ -1,6 +1,6 @@
 # React + TypeScript + Vite
 
-Learnt how to build on react project using typescript.
+Learnt how to build on react project using typescript and shadcn UI.
 
 So I decided to build this frontend Mentor challenge
 to test my knowledge, and it turned challenging and interesting at the same time. I am really happy I put these feat out.
